@@ -1,0 +1,106 @@
+name: Continuous integration
+
+on:
+  push:
+  pull_request:
+
+env:
+  SETUP_NODE_NODE_VERSION: 19.7
+
+jobs:
+  prettier_check:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Run prettier
+        run: |
+          npm run prettier:check
+  eslint_check:
+    name: ESLint check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Run eslint
+        run: |
+          npm run eslint:check
+  vitest_check:
+    name: Vitest check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Run Vitest
+        run: |
+          npm run vitest:check
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage_report
+          path: coverage_report
+  typescript_check:
+    name: TypeScript check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Run TypeScript
+        run: |
+          npm run typescript:check
+  compile:
+    name: Compile
+    needs: [eslint_check, vitest_check, typescript_check]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Compile
+        run: |
+          npm run compile
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
