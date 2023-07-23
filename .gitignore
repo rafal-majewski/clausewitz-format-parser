@@ -9,4 +9,4 @@ node_modules/
 /dist/
 /coverage/
 .vscode/
-/coverage_report/
+/coverage-report/
