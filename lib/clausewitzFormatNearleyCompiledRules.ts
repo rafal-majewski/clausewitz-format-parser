@@ -3,7 +3,11 @@ import nearley from "nearley";
 export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 	Lexer: undefined,
 	ParserRules: [
-		{"name": "CLAUSEWITZ_FORMAT", "symbols": ["OBJECT_CONTENT"], "postprocess": (d) => d[0]},
+		{
+			"name": "CLAUSEWITZ_FORMAT",
+			"symbols": ["OBJECT_CONTENT", "OPTIONAL_FINAL_COMMENT"],
+			"postprocess": (d) => d[0],
+		},
 		{
 			"name": "VALUE_SEQUENCE_SURROUNDED_BY_WHITESPACE",
 			"symbols": ["OPTIONAL_WHITESPACE", "VALUE_SEQUENCE", "OPTIONAL_WHITESPACE"],
@@ -44,10 +48,10 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 			"symbols": ["OPTIONAL_WHITESPACE$ebnf$1"],
 			"postprocess": (d) => d[0].join(""),
 		},
-		{"name": "SCALAR$ebnf$1", "symbols": [/[^\s{}]/]},
+		{"name": "SCALAR$ebnf$1", "symbols": [/[^\s{}#]/]},
 		{
 			"name": "SCALAR$ebnf$1",
-			"symbols": ["SCALAR$ebnf$1", /[^\s{}]/],
+			"symbols": ["SCALAR$ebnf$1", /[^\s{}#]/],
 			"postprocess": function arrpush(d) {
 				return d[0].concat([d[1]]);
 			},
@@ -69,6 +73,30 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 			"name": "OBJECT_CONTENT",
 			"symbols": ["VALUE_SEQUENCE_SURROUNDED_BY_WHITESPACE"],
 			"postprocess": (d) => d[0],
+		},
+		{"name": "OPTIONAL_FINAL_COMMENT", "symbols": [], "postprocess": () => []},
+		{
+			"name": "OPTIONAL_FINAL_COMMENT",
+			"symbols": ["COMMENT_WITHOUT_NEWLINE"],
+			"postprocess": (d) => d[0],
+		},
+		{
+			"name": "COMMENT_WITHOUT_NEWLINE",
+			"symbols": [{"literal": "#"}, "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH"],
+			"postprocess": (d) => d[0].concat(d[1]),
+		},
+		{"name": "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1", "symbols": []},
+		{
+			"name": "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1",
+			"symbols": ["ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1", /[^\n]/],
+			"postprocess": function arrpush(d) {
+				return d[0].concat([d[1]]);
+			},
+		},
+		{
+			"name": "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH",
+			"symbols": ["ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1"],
+			"postprocess": (d) => d[0].join(""),
 		},
 	],
 	ParserStart: "CLAUSEWITZ_FORMAT",
