@@ -11,7 +11,7 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 		},
 		{
 			"name": "SCALAR_SEQUENCE_SURROUNDED_BY_WHITESPACE",
-			"symbols": ["OPTIONAL_WHITESPACE", "SCALAR_SEQUENCE"],
+			"symbols": ["OPTIONAL_WHITESPACE", "SCALAR_SEQUENCE", "OPTIONAL_WHITESPACE"],
 			"postprocess": (d) => d[1],
 		},
 		{"name": "SCALAR_SEQUENCE", "symbols": ["SCALAR"], "postprocess": (d) => [d[0]]},
