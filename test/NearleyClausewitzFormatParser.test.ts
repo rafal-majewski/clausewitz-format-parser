@@ -10,6 +10,11 @@ describe("NearleyClausewitzFormatParser", () => {
 		[" a", ["a"]],
 		["a ", ["a"]],
 		["a = b", ["a", "=", "b"]],
+		["{ a }", [["a"]]],
+		["{ a b }", [["a", "b"]]],
+		["{a b}", [["a", "b"]]],
+		["{ a } { b }", [["a"], ["b"]]],
+		[" { a } { b } ", [["a"], ["b"]]],
 	])("parse(%p)", (text, expected) => {
 		const parser = new NearleyClausewitzFormatParser();
 		expect(parser.parse(text)).toEqual(expected);
