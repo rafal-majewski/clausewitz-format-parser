@@ -1,7 +1,7 @@
 import {describe, test, expect} from "vitest";
 import {NearleyClausewitzFormatParser} from "../lib/NearleyClausewitzFormatParser.js";
 
-describe("NearleyClausewitzFormatParser", () => {
+describe("NearleyClausewitzFormatParser", async () => {
 	test.each([
 		["", []],
 		["a", ["a"]],
@@ -22,6 +22,7 @@ describe("NearleyClausewitzFormatParser", () => {
 		["a #comment\n= b", ["a", "=", "b"]],
 		["a#comment\n= b", ["a", "=", "b"]],
 		["#comment\na = b", ["a", "=", "b"]],
+		["a = #comment\n#comment\nb", ["a", "=", "b"]],
 	])("parse(%p)", (text, expected) => {
 		const parser = new NearleyClausewitzFormatParser();
 		expect(parser.parse(text)).toEqual(expected);
