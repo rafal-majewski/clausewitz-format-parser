@@ -30,10 +30,30 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 				return d[0].concat([d[1]]);
 			},
 		},
+		{"name": "AT_LEAST_ONE_WHITESPACE", "symbols": ["AT_LEAST_ONE_WHITESPACE$ebnf$1"]},
+		{"name": "AT_LEAST_ONE_WHITESPACE$ebnf$2", "symbols": []},
+		{
+			"name": "AT_LEAST_ONE_WHITESPACE$ebnf$2",
+			"symbols": ["AT_LEAST_ONE_WHITESPACE$ebnf$2", /[\s]/],
+			"postprocess": function arrpush(d) {
+				return d[0].concat([d[1]]);
+			},
+		},
+		{"name": "AT_LEAST_ONE_WHITESPACE$ebnf$3", "symbols": []},
+		{
+			"name": "AT_LEAST_ONE_WHITESPACE$ebnf$3",
+			"symbols": ["AT_LEAST_ONE_WHITESPACE$ebnf$3", /[\s]/],
+			"postprocess": function arrpush(d) {
+				return d[0].concat([d[1]]);
+			},
+		},
 		{
 			"name": "AT_LEAST_ONE_WHITESPACE",
-			"symbols": ["AT_LEAST_ONE_WHITESPACE$ebnf$1"],
-			"postprocess": (d) => d[0].join(""),
+			"symbols": [
+				"AT_LEAST_ONE_WHITESPACE$ebnf$2",
+				"COMMENT_WITH_NEWLINE",
+				"AT_LEAST_ONE_WHITESPACE$ebnf$3",
+			],
 		},
 		{"name": "OPTIONAL_WHITESPACE$ebnf$1", "symbols": []},
 		{
@@ -43,10 +63,30 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 				return d[0].concat([d[1]]);
 			},
 		},
+		{"name": "OPTIONAL_WHITESPACE", "symbols": ["OPTIONAL_WHITESPACE$ebnf$1"]},
+		{"name": "OPTIONAL_WHITESPACE$ebnf$2", "symbols": []},
+		{
+			"name": "OPTIONAL_WHITESPACE$ebnf$2",
+			"symbols": ["OPTIONAL_WHITESPACE$ebnf$2", /[\s]/],
+			"postprocess": function arrpush(d) {
+				return d[0].concat([d[1]]);
+			},
+		},
+		{"name": "OPTIONAL_WHITESPACE$ebnf$3", "symbols": []},
+		{
+			"name": "OPTIONAL_WHITESPACE$ebnf$3",
+			"symbols": ["OPTIONAL_WHITESPACE$ebnf$3", /[\s]/],
+			"postprocess": function arrpush(d) {
+				return d[0].concat([d[1]]);
+			},
+		},
 		{
 			"name": "OPTIONAL_WHITESPACE",
-			"symbols": ["OPTIONAL_WHITESPACE$ebnf$1"],
-			"postprocess": (d) => d[0].join(""),
+			"symbols": [
+				"OPTIONAL_WHITESPACE$ebnf$2",
+				"COMMENT_WITH_NEWLINE",
+				"OPTIONAL_WHITESPACE$ebnf$3",
+			],
 		},
 		{"name": "SCALAR$ebnf$1", "symbols": [/[^\s{}#]/]},
 		{
@@ -83,8 +123,8 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 		{
 			"name": "COMMENT_WITHOUT_NEWLINE",
 			"symbols": [{"literal": "#"}, "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH"],
-			"postprocess": (d) => d[0].concat(d[1]),
 		},
+		{"name": "COMMENT_WITH_NEWLINE", "symbols": ["COMMENT_WITHOUT_NEWLINE", {"literal": "\n"}]},
 		{"name": "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1", "symbols": []},
 		{
 			"name": "ANYTHING_BUT_NEWLINE_OF_ANY_LENGTH$ebnf$1",
