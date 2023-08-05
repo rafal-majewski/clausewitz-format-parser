@@ -60,21 +60,50 @@ export const clausewitzFormatNearleyCompiledRules: nearley.CompiledRules = {
 			],
 			"postprocess": (d) => d[1],
 		},
-		{"name": "VALUE_SEQUENCE$ebnf$1", "symbols": []},
 		{
 			"name": "VALUE_SEQUENCE$ebnf$1",
-			"symbols": ["VALUE_SEQUENCE$ebnf$1", "VALUE_SEQUENCE_TAIL"],
-			"postprocess": (d) => [...d[0], d[1]],
+			"symbols": ["VALUE_SEQUENCE_TAIL"],
+			"postprocess": (d) => d[0],
+		},
+		{
+			"name": "VALUE_SEQUENCE$ebnf$1",
+			"symbols": [],
+			"postprocess": () => null,
 		},
 		{
 			"name": "VALUE_SEQUENCE",
 			"symbols": ["VALUE", "VALUE_SEQUENCE$ebnf$1"],
-			"postprocess": (d) => [d[0], ...d[1]],
+			"postprocess": (d) => [d[0], ...(d[1] ?? [])],
+		},
+		{
+			"name": "VALUE_SEQUENCE_TAIL$ebnf$1",
+			"symbols": ["VALUE_SEQUENCE_TAIL"],
+			"postprocess": (d) => d[0],
+		},
+		{
+			"name": "VALUE_SEQUENCE_TAIL$ebnf$1",
+			"symbols": [],
+			"postprocess": () => null,
 		},
 		{
 			"name": "VALUE_SEQUENCE_TAIL",
-			"symbols": [{type: "AT_LEAST_ONE_IGNORED_CHARACTER"}, "VALUE"],
-			"postprocess": (d) => d[1],
+			"symbols": ["OBJECT", "VALUE_SEQUENCE_TAIL$ebnf$1"],
+			"postprocess": (d) => [d[0], ...(d[1] ?? [])],
+		},
+		{
+			"name": "VALUE_SEQUENCE_TAIL$ebnf$2",
+			"symbols": ["VALUE_SEQUENCE_TAIL"],
+			"postprocess": (d) => d[0],
+		},
+		{
+			"name": "VALUE_SEQUENCE_TAIL$ebnf$2",
+			"symbols": [],
+			"postprocess": () => null,
+		},
+		{
+			"name": "VALUE_SEQUENCE_TAIL",
+			"symbols": [{type: "AT_LEAST_ONE_IGNORED_CHARACTER"}, "VALUE", "VALUE_SEQUENCE_TAIL$ebnf$2"],
+			"postprocess": (d) => [d[1], ...(d[2] ?? [])],
 		},
 		{
 			"name": "VALUE",
