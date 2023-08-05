@@ -9,7 +9,7 @@ const lexer = moo.compile({
 	},
 	CURLY_BRACE_OPEN: "{",
 	CURLY_BRACE_CLOSE: "}",
-	SCALAR: /(?:[^\s{}#"]+)|(?:"[^"]*")/,
+	SCALAR: /(?:[^\s{}#"]+)|(?:"[^"\\]*(?:\\.[^"\\]*)*")/,
 	FINAL_COMMENT: {match: /(?:#[^\n]*)/, lineBreaks: true},
 });
 

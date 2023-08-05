@@ -28,6 +28,7 @@ describe("NearleyClausewitzFormatParser", async () => {
 		["{}{}", [[], []]],
 		[`a = "b"`, ["a", "=", `"b"`]],
 		[`a = "b c"`, ["a", "=", `"b c"`]],
+		[`a = "b\\"c"`, ["a", "=", `"b\\"c"`]],
 	])("parse(%p)", (text, expected) => {
 		const parser = new NearleyClausewitzFormatParser();
 		expect(parser.parse(text)).toEqual(expected);
