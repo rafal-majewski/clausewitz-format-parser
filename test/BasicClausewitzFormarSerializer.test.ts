@@ -6,6 +6,7 @@ describe("BasicClausewitzFormarSerializer", async () => {
 		[[], "\n"],
 		[["a"], "a\n"],
 		[["a", "b"], "a\nb\n"],
+		[[[]], "{}\n"],
 	])("serialize(%p)", (clausewitzFormatObject, expected) => {
 		const serializer = new BasicClausewitzFormarSerializer({
 			betweenItems: () => "\n",

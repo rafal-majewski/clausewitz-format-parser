@@ -12,8 +12,18 @@ export class BasicClausewitzFormarSerializer implements ClausewitzFormatSerializ
 	public constructor(whitespaceGenerators: WhitespaceGenerators) {
 		this.whitespaceGenerators = whitespaceGenerators;
 	}
+	private recursivelySerializeObject(object: ClausewitzFormatObject): string {
+		const result = object.map((item) => {
+			if (typeof item === "string") {
+				return item;
+			}
+			return `{${this.recursivelySerializeObject(item)}}`;
+		});
+		return result.join(this.whitespaceGenerators.betweenItems());
+	}
+
 	public serialize(clausewitzFormatObject: ClausewitzFormatObject): string {
-		const result = clausewitzFormatObject.join(this.whitespaceGenerators.betweenItems()) + "\n";
+		const result = this.recursivelySerializeObject(clausewitzFormatObject) + "\n";
 		return result;
 	}
 }
