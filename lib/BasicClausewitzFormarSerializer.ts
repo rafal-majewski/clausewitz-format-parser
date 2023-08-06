@@ -17,10 +17,10 @@ export class BasicClausewitzFormarSerializer implements ClausewitzFormatSerializ
 		this.whitespaceGenerators = whitespaceGenerators;
 	}
 	private recursivelySerializeObject(
-		object: ClausewitzFormatObject,
+		clausewitzFormatObject: ClausewitzFormatObject,
 		indentationLevel: number,
 	): string {
-		const result = object
+		const result = clausewitzFormatObject
 			.map((item) => {
 				if (typeof item === "string") {
 					return item;

@@ -8,6 +8,7 @@ describe("BasicClausewitzFormarSerializer", async () => {
 		[["a", "b"], "a\nb\n"],
 		[[[]], "{}\n"],
 		[["a", ["b"]], "a\n{\n\tb\n}\n"],
+		[["a", ["b", "c", ["d", [], "e"]]], "a\n{\n\tb\n\tc\n\t{\n\t\td\n\t\t{}\n\t\te\n\t}\n}\n"],
 	])("serialize(%p)", (clausewitzFormatObject, expected) => {
 		const serializer = new BasicClausewitzFormarSerializer({
 			betweenItems: (indentationLevel) => "\n" + "\t".repeat(indentationLevel),
