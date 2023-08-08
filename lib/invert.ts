@@ -22,12 +22,6 @@ type FocusPositionWithoutRelations = Omit<FocusPosition, "relativeToFocuses"> & 
 	relativeToFocusIds: Focus["id"][];
 };
 
-// function invertFocuses(
-// 	parsedHoI4FocusTreeFocuses: ClausewitzFormatObject,
-
-// prerequisite = { focus = EST_establish_the_rahvuskogu }
-// prerequisite = { focus = EST_ismaaliit }
-
 function extractPrerequisite(parsedPrerequisites: ClausewitzFormatObject): {
 	anyOfIds: Focus["id"][];
 } {
