@@ -108,6 +108,52 @@ function extractFocus(parsedFocus: ClausewitzFormatObject): FocusWithoutRelation
 	return {id, position, prerequisites, rest};
 }
 
+function invertFocuses(
+	focuses: Map<Focus["id"], FocusWithoutRelations>,
+): Map<Focus["id"], FocusWithoutRelations> {
+	return new Map(focuses.entries());
+}
+
+// focus = {
+// 	id = EST_chamber_of_deputies
+// 	icon = GFX_goal_generic_consumer_goods
+// 	prerequisite = { focus = EST_establish_the_rahvuskogu }
+// 	prerequisite = { focus = EST_ismaaliit }
+// 	x = 0
+// 	y = 1
+// 	relative_position_id = EST_establish_the_rahvuskogu
+
+// 	cost = 10
+
+// 	ai_will_do = {
+// 		factor = 1
+// 	}
+
+// 	available = {
+// 	}
+
+// 	bypass = {
+
+// 	}
+
+function flattenFocus(focus: FocusWithoutRelations): ClausewitzFormatObject {
+	return [
+		...["id", "=", `${focus.id}`],
+		...["x", "=", `${focus.position.x}`],
+		...["y", "=", `${focus.position.y}`],
+		...focus.position.relativeToFocusIds.flatMap((id) => ["relative_position_id", "=", id]),
+		...focus.prerequisites.flatMap((prerequisite) => [
+			"prerequisite",
+			"=",
+			prerequisite.anyOfIds.flatMap((id) => ["focus", "=", id]),
+		]),
+		...focus.rest,
+	];
+}
+function flattenFocuses(focuses: Map<Focus["id"], FocusWithoutRelations>): ClausewitzFormatObject {
+	return Array.from(focuses.values()).flatMap((focus) => ["focus", "=", flattenFocus(focus)]);
+}
+
 function invertFocusTree(parsedFocusTree: ClausewitzFormatObject): ClausewitzFormatObject {
 	const focuses = new Map<Focus["id"], FocusWithoutRelations>();
 	let toOmit = parsedFocusTree.map(() => false);
@@ -129,7 +175,10 @@ function invertFocusTree(parsedFocusTree: ClausewitzFormatObject): ClausewitzFor
 		toOmit[i + 2] = true;
 	}
 
-	const invertedFocuses = parsedFocusTree.filter((_, i) => !toOmit[i]);
+	const invertedFocuses = [
+		...parsedFocusTree.filter((_, i) => !toOmit[i]),
+		...flattenFocuses(invertFocuses(focuses)),
+	];
 	return invertedFocuses;
 }
 
