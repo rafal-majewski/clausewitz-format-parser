@@ -30,7 +30,7 @@
 	},
 	"homepage": "https://github.com/Rafal-Majewski/clausewitz-format-parser#readme",
 	"devDependencies": {
-		"@types/moo": "^0.5.5",
+		"@types/moo": "^0.5.8",
 		"@types/nearley": "^2.11.2",
 		"@types/node": "^20.4.8",
 		"@typescript-eslint/eslint-plugin": "^5.57.1",
