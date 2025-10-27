@@ -106,7 +106,7 @@ jobs:
           shopt -u dotglob
           rm -rf ./${{github.event.repository.owner.login}}-${{github.event.repository.name}}-*/
       - name: Download dist
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: dist
           path: dist
